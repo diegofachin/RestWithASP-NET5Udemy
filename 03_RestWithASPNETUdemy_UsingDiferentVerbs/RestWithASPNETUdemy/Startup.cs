@@ -22,6 +22,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using RestWithASPNETUdemy.Hypermedia.Filters;
+using RestWithASPNETUdemy.Hypermedia.Enricher;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace RestWithASPNETUdemy
 {
@@ -89,10 +93,10 @@ namespace RestWithASPNETUdemy
             var connection = Configuration["MySQLConnection:MySQLConnectionString"];
             services.AddDbContext<MySQLContext>(options => options.UseMySql(connection));
 
-            if (Environment.IsDevelopment())
-            {
-                MirgrateDatabase(connection);
-            }
+            //if (Environment.IsDevelopment())
+            //{
+            //    MirgrateDatabase(connection);
+            //}
 
             /* - Adiciona supporte para a API trabalhar com request/response em JSON ou XML
             services.AddMvc(options =>
@@ -105,13 +109,13 @@ namespace RestWithASPNETUdemy
             .AddXmlSerializerFormatters();
             */
 
-            /*
+            
             var filtersOptions = new HyperMediaFilterOptions();
             filtersOptions.ContentResponseEnricherList.Add(new PersonEnricher());
             filtersOptions.ContentResponseEnricherList.Add(new BookEnricher());
 
             services.AddSingleton(filtersOptions);
-            */
+            
 
             services.AddApiVersioning();
 
@@ -132,13 +136,18 @@ namespace RestWithASPNETUdemy
             });
 
             //Dependency Injection
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
             services.AddScoped<IBookBusiness, BookBusinessImplementation>();
             services.AddScoped<ILoginBusiness, LoginBusinessImplementation>();
+            services.AddScoped<IFileBusiness, FileBusinessImplementation>();
 
             services.AddTransient<ITokenService, TokenService>();
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPersonRepository, PersonRepository>();
+
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
         }
@@ -173,7 +182,7 @@ namespace RestWithASPNETUdemy
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                //endpoints.MapControllerRoute("DefaultApi", "{controller=values}/{id?}");
+                endpoints.MapControllerRoute("DefaultApi", "{controller=values}/{id?}");
             });
         }
 

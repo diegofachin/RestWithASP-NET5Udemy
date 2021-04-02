@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace RestWithASPNETUdemy.Hypermedia.Enricher
 {
-    public class BookEnricher //: ContentResponseEnricher<BookVO>
+    public class BookEnricher : ContentResponseEnricher<BookVO>
     {
-        /*
+        
         private readonly object _lock = new object();
         protected override Task EnrichModel(BookVO content, IUrlHelper urlHelper)
         {
@@ -57,6 +57,6 @@ namespace RestWithASPNETUdemy.Hypermedia.Enricher
                 return new StringBuilder(urlHelper.Link("DefaultApi", url)).Replace("%2F", "/").ToString();
             };
         }
-        */
+        
     }
 }

@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace RestWithASPNETUdemy.Data.VO
 {
-    public class PersonVO //: ISupportsHyperMedia
+    public class PersonVO : ISupportsHyperMedia
     {
         //[JsonPropertyName("code")]
         public long Id { get; set; }
@@ -24,6 +24,9 @@ namespace RestWithASPNETUdemy.Data.VO
         //[JsonPropertyName("sex")]
 
         public string Gender { get; set; }
-        //public List<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
+
+        public bool Enabled { get; set; }
+
+        public List<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
     }
 }

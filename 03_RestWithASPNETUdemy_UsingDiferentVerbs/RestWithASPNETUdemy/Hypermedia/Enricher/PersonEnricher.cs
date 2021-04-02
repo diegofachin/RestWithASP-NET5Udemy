@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace RestWithASPNETUdemy.Hypermedia.Enricher
 {
-    public class PersonEnricher //: ContentResponseEnricher<PersonVO>
+    public class PersonEnricher : ContentResponseEnricher<PersonVO>
     {
-        /*
+        
         private readonly object _lock = new object();
         protected override Task EnrichModel(PersonVO content, IUrlHelper urlHelper)
         {
@@ -41,6 +41,13 @@ namespace RestWithASPNETUdemy.Hypermedia.Enricher
             });
             content.Links.Add(new HyperMediaLink()
             {
+                Action = HttpActionVerb.PATCH,
+                Href = link,
+                Rel = RelationType.self,
+                Type = ResponseTypeFormat.DefaultPut
+            });
+            content.Links.Add(new HyperMediaLink()
+            {
                 Action = HttpActionVerb.DELETE,
                 Href = link,
                 Rel = RelationType.self,
@@ -57,6 +64,6 @@ namespace RestWithASPNETUdemy.Hypermedia.Enricher
                 return new StringBuilder(urlHelper.Link("DefaultApi", url)).Replace("%2F", "/").ToString();
             };
         }
-        */
+        
     }
 }
